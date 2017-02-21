@@ -1,6 +1,6 @@
 {
   "name": "generator-app-gen",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "description": "Code generator based on Yeoman Generators.",
   "preferGlobal": true,
   "contributors": [
@@ -25,7 +25,8 @@
     "scaffolding"
   ],
   "scripts": {
-    "test": "mocha --reporter spec --require blanket -R mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js"
+    "test": "mocha --reporter spec --require blanket -R mocha-lcov-reporter",
+    "testWithCover": "mocha --reporter spec --require blanket -R mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js"
   },
   "author": "Tarcísio Abadio de Magalhães Júnior",
   "license": "ISC",
@@ -36,6 +37,7 @@
     "merge": "^1.2.0",
     "mysql": "^2.5.5",
     "pg": "^6.1.2",
+    "request": "^2.79.0",
     "underscore": "^1.8.2",
     "yeoman-generator": "^0.18.9"
   },

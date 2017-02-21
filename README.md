@@ -54,9 +54,11 @@ Below are the available drivers for each configuration.
 ### In
 
 * [`JSON`](#driver-in-json)
+* [`JSONFILE`](#driver-in-jsonfile)
 * [`PROMPT`](#driver-in-prompt)
 * [`MYSQL`](#driver-in-mysql)
 * [`POSTGRESQL`](#driver-in-postgresql)
+* [`JS`](#driver-in-js)
 
 ### To
 
@@ -120,7 +122,7 @@ Read a template from file.
 ...
 "from": {
     "driver": "JSON",
-    template: ['template string <%=value%>']
+    "template": ['template string <%=value%>']
 }
 ...
 ```
@@ -137,6 +139,18 @@ Read the static supplied JSON config for template bindings.
     "config": {
         "message": "Hello World!"
     }
+}
+...
+```
+<a name="driver-in-jsonfile" />
+### JSONFILE
+Similar to JSON, but reads the JSON of supplied files.
+
+```js
+...
+"in": { # required
+    "driver": "JSONFILE",
+    "config": ["file name.json"]
 }
 ...
 ```
@@ -195,16 +209,52 @@ Request configuration from database.
 }
 ...
 ```
+<a name="driver-in-js" />
+### JS
+Read the values from a execution of JavaScript file.
+
+```js
+...
+"in": { 
+    "driver": "JS",
+    "config": { "filename" : "javascrip_file_name.js" }
+}
+...
+```
+JavaScript Sample:
+```js
+module.exports = function(
+    generator,  // Instance of Yo Generator
+    inValues,   // Previous IN values
+    callback    // Callback function
+    ) {
+    
+    // Your code goes here
+    var newValues = {
+        newValue: "newValue"
+    };
+
+    console.log('>>', Object.assign({}, inValues, newValues));
+    
+    callback(null, Object.assign({}, inValues, newValues));
+}
+```
 
 ## To
 
 <a name="plugin-file" />
 ### FILE
-Writes the rendered template at output file specified.
+Writes the rendered template at supplied output file.
 ```js
 {
     "driver": "FILE",
-    "out": "path to destination file",
+    "out": ["path to destination file"],
+
+    // Optional - Replace ocurrences in file.
+    "replace" : {
+        "regex": "JS RegExp",
+        "flags": "JS RegExp flags."
+    }
 }
 ```
 
@@ -218,7 +268,8 @@ Writes the rendered template at console output.
 ```
 
 # Examples
-## 1) Print at console a string from JSON template where the input is supplied by user.
+
+Prints a string at console from a JSON template where the input is supplied by user.
 
 app-gen.json
 ```
